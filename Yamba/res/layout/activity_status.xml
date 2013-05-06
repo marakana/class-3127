@@ -32,4 +32,14 @@
         android:layout_alignParentTop="true"
         android:text="@string/statusUpdateLabel" />
 
+    <TextView
+        android:id="@+id/statusCount"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/statusUpdateButton"
+        android:layout_alignBottom="@+id/statusUpdateButton"
+        android:layout_alignLeft="@+id/statusText"
+        android:text="140"
+        android:textAppearance="?android:attr/textAppearanceMedium" />
+
 </RelativeLayout>
