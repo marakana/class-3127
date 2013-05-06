@@ -6,5 +6,7 @@
     <string name="hello_world">Hello world!</string>
     <string name="statusUpdateLabel">Update</string>
     <string name="statusHint">What\'s going on?</string>
-
+    <string name="statusSuccessfullyPosted">Successfully Posted</string>
+    <string name="statusFailedToPost">Failed To Post</string>
+    
 </resources>
