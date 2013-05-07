@@ -33,6 +33,9 @@
         </activity>
         <activity android:name=".PrefsActivity" >
         </activity>
+
+        <service android:name=".RefreshService" >
+        </service>
     </application>
 
 </manifest>

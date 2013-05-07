@@ -17,5 +17,6 @@
     <string name="summaryPassword">What\'s your password?</string>
     <string name="titlePreferences">Preferences</string>
     <string name="titlePrefs">Prefs</string>
+    <string name="titleRefresh">Refresh</string>
 
 </resources>

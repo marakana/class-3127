@@ -11,3 +11,4 @@ Android Bootcamp in KC
 * https://github.com/marakana/SecureNote
 * PackageManager and app updates
 * Device Administration
+* Binder IPC

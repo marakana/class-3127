@@ -29,6 +29,9 @@ public class MainActivity extends Activity {
 		case R.id.actionPreferences:
 			startActivity( new Intent(this, PrefsActivity.class) );
 			return true;
+		case R.id.actionRefresh:
+			startService( new Intent(this, RefreshService.class) );
+			return true;
 		default:
 			return false;
 		}

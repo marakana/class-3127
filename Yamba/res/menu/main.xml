@@ -13,5 +13,11 @@
         android:title="@string/titlePreferences"
         android:titleCondensed="@string/titlePrefs">
     </item>
+    <item
+        android:id="@+id/actionRefresh"
+        android:icon="@android:drawable/ic_menu_rotate"
+        android:showAsAction="always|withText"
+        android:title="@string/titleRefresh">
+    </item>
 
 </menu>
