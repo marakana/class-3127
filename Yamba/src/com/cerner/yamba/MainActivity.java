@@ -24,11 +24,11 @@ public class MainActivity extends Activity {
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
 		case R.id.actionStatusUpdate:
-//			startActivity( new Intent(this, StatusActivity.class) );
-			startActivity( new Intent("com.cerner.action.UPDATE_STATUS") );
+			 startActivity( new Intent(this, StatusActivity.class) );
 			return true;
 		default:
 			return false;
 		}
 	}
+	
 }
