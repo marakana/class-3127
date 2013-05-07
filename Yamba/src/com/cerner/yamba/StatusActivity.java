@@ -61,8 +61,8 @@ public class StatusActivity extends Activity {
 			public void afterTextChanged(Editable s) {
 				int count = 140 - s.length();
 				statusCount.setText(Integer.toString(count));
-		
-				if(count<DANGER_ZONE) {
+
+				if (count < DANGER_ZONE) {
 					statusCount.setTextColor(Color.RED);
 				} else {
 					statusCount.setTextColor(originalColor);
@@ -102,13 +102,14 @@ public class StatusActivity extends Activity {
 
 	private class PostToCloudTask extends AsyncTask<String, Void, String> {
 		private ProgressDialog dialog;
-		
+
 		// Executes on the UI thread
 		@Override
 		protected void onPreExecute() {
-			dialog = ProgressDialog.show(StatusActivity.this, "Posting", "Please wait...");
+			dialog = ProgressDialog.show(StatusActivity.this, "Posting",
+					"Please wait...");
 		}
-		
+
 		// Executes on a non-UI thread
 		@Override
 		protected String doInBackground(String... params) {

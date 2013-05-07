@@ -16,5 +16,10 @@ gen/
 local.properties
 
 # Eclipse project files
-.classpath
-.project
+#.classpath
+#.project
+
+# Other code
+ApiDemos/
+YambaClientLib/
+

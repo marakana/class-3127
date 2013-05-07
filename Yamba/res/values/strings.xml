@@ -8,5 +8,8 @@
     <string name="statusHint">What\'s going on?</string>
     <string name="statusSuccessfullyPosted">Successfully Posted</string>
     <string name="statusFailedToPost">Failed To Post</string>
-    
+    <string name="title_activity_main">MainActivity</string>
+    <string name="titleUpdateStatus">Update Status</string>
+    <string name="titleUpdate">Update</string>
+
 </resources>
