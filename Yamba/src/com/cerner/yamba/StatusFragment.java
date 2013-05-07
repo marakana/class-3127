@@ -124,8 +124,14 @@ public class StatusFragment extends Fragment {
 			values.put(StatusContract.Columns.MESSAGE, params[0]);
 			values.put(StatusContract.Columns.CREATED_AT,
 					System.currentTimeMillis());
-			Uri ret = getActivity().getContentResolver().insert(
-					StatusContract.CONTENT_URI, values);
+			Uri ret;
+			try {
+				ret = getActivity().getContentResolver().insert(
+						StatusContract.CONTENT_URI, values);
+			} catch (RuntimeException e) {
+				e.printStackTrace();
+				return getString(R.string.statusFailedToPost);
+			}
 
 //			if( getActivity().getContentResolver().getType(ret) != StatusContract.TYPE_ITEM ) 
 //				return "Error!";
