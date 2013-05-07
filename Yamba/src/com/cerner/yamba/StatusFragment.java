@@ -2,14 +2,12 @@ package com.cerner.yamba;
 
 import android.app.Fragment;
 import android.app.ProgressDialog;
-import android.content.Intent;
-import android.content.SharedPreferences;
+import android.content.ContentValues;
 import android.graphics.Color;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 import android.text.Editable;
-import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -20,9 +18,6 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
-
-import com.marakana.android.yamba.clientlib.YambaClient;
-import com.marakana.android.yamba.clientlib.YambaClientException;
 
 public class StatusFragment extends Fragment {
 	private static final String TAG = StatusFragment.class.getSimpleName();
@@ -121,26 +116,22 @@ public class StatusFragment extends Fragment {
 		// Executes on a non-UI thread
 		@Override
 		protected String doInBackground(String... params) {
-			SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getActivity());
-			String username = prefs.getString(PrefsFragment.USERNAME, "");
-			String password = prefs.getString(PrefsFragment.PASSWORD, "");
-			
-			// Do we have username and password set?
-			if(TextUtils.isEmpty(username) || TextUtils.isEmpty(password)) {
-				startActivity( new Intent(getActivity(), PrefsActivity.class) );
-				return "Please set your username and password first";
-			}
-			
+
 			// Post to the cloud
-			YambaClient cloud = new YambaClient(username, password);
-			try {
-				cloud.postStatus(params[0]);
-				return getString(R.string.statusSuccessfullyPosted);
-			} catch (YambaClientException e) {
-				Log.e(TAG, "Failed to post", e);
-				e.printStackTrace();
-				return getString(R.string.statusFailedToPost);
-			}
+			ContentValues values = new ContentValues();
+			values.put(StatusContract.Columns.ID, -1);
+			values.put(StatusContract.Columns.USER, "");
+			values.put(StatusContract.Columns.MESSAGE, params[0]);
+			values.put(StatusContract.Columns.CREATED_AT,
+					System.currentTimeMillis());
+			Uri ret = getActivity().getContentResolver().insert(
+					StatusContract.CONTENT_URI, values);
+
+//			if( getActivity().getContentResolver().getType(ret) != StatusContract.TYPE_ITEM ) 
+//				return "Error!";
+			
+			return (ret == null) ? getString(R.string.statusFailedToPost)
+					: getString(R.string.statusSuccessfullyPosted);
 		}
 
 		// Executes on UI thread after doInBackground()

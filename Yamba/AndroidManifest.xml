@@ -36,6 +36,12 @@
 
         <service android:name=".RefreshService" >
         </service>
+
+        <provider
+            android:name=".StatusProvider"
+            android:authorities="com.cerner.yamba.provider"
+            android:exported="false" >
+        </provider>
     </application>
 
 </manifest>
