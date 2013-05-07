@@ -17,10 +17,11 @@
         android:theme="@style/AppTheme" >
         <activity
             android:name="com.cerner.yamba.StatusActivity"
-            android:label="@string/titleUpdateStatus"  >
-            <intent-filter >
-                <action android:name="com.cerner.action.UPDATE_STATUS"/>
-                <category android:name="android.intent.category.DEFAULT"/>
+            android:label="@string/titleUpdateStatus" >
+            <intent-filter>
+                <action android:name="com.cerner.action.UPDATE_STATUS" />
+
+                <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
         <activity android:name="com.cerner.yamba.MainActivity" >
@@ -29,6 +30,8 @@
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+        </activity>
+        <activity android:name=".PrefsActivity" >
         </activity>
     </application>
 

@@ -26,6 +26,9 @@ public class MainActivity extends Activity {
 		case R.id.actionStatusUpdate:
 			 startActivity( new Intent(this, StatusActivity.class) );
 			return true;
+		case R.id.actionPreferences:
+			startActivity( new Intent(this, PrefsActivity.class) );
+			return true;
 		default:
 			return false;
 		}

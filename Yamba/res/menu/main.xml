@@ -2,10 +2,16 @@
 
     <item
         android:id="@+id/actionStatusUpdate"
+        android:icon="@android:drawable/ic_menu_edit"
         android:showAsAction="always|withText"
         android:title="@string/titleUpdateStatus"
-        android:icon="@android:drawable/ic_menu_edit"
         android:titleCondensed="@string/titleUpdate">
+    </item>
+    <item
+        android:id="@+id/actionPreferences"
+        android:icon="@android:drawable/ic_menu_preferences"
+        android:title="@string/titlePreferences"
+        android:titleCondensed="@string/titlePrefs">
     </item>
 
 </menu>

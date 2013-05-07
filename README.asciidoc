@@ -9,4 +9,5 @@ Android Bootcamp in KC
 * Animations when starting activities
 * Security in depth (rooted devices)
 * https://github.com/marakana/SecureNote
-
+* PackageManager and app updates
+* Device Administration
