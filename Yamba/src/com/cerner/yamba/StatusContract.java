@@ -9,7 +9,8 @@ public final class StatusContract {
 
 	// General
 	public static final String ACTION_NEW_STATUS = "com.cerner.yamba.NEW_STATUS";
-	
+	public static final int NOTIFICATION_NEW_STATUS = 42;
+
 	// Content Provider
 	public static final String AUTHORITY = "com.cerner.yamba.provider";
 	public static final String PATH = "statuses";

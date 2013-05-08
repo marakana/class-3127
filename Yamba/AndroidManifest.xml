@@ -45,6 +45,14 @@
             android:authorities="com.cerner.yamba.provider"
             android:exported="false" >
         </provider>
+
+        <receiver
+            android:name=".NotificationReceiver"
+            android:exported="false" >
+            <intent-filter>
+                <action android:name="com.cerner.yamba.NEW_STATUS" />
+            </intent-filter>
+        </receiver>
     </application>
 
 </manifest>
