@@ -7,6 +7,10 @@ public final class StatusContract {
 	private StatusContract() {
 	}
 
+	// General
+	public static final String ACTION_NEW_STATUS = "com.cerner.yamba.NEW_STATUS";
+	
+	// Content Provider
 	public static final String AUTHORITY = "com.cerner.yamba.provider";
 	public static final String PATH = "statuses";
 	public static final Uri CONTENT_URI = Uri.parse("content://" + AUTHORITY

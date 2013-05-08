@@ -16,6 +16,7 @@ import com.marakana.android.yamba.clientlib.YambaClientException;
 
 public class RefreshService extends IntentService {
 	private static final String TAG = RefreshService.class.getSimpleName();
+	private long latestTimestamp = 0;
 
 	public RefreshService() {
 		super(TAG);
@@ -24,7 +25,11 @@ public class RefreshService extends IntentService {
 	@Override
 	public void onCreate() {
 		super.onCreate();
-		Log.d(TAG, "onCreated");
+
+		latestTimestamp = PreferenceManager.getDefaultSharedPreferences(this)
+				.getLong("latestTimestamp", 0);
+
+		Log.d(TAG, "onCreated with latestTimestamp: " + latestTimestamp);
 	}
 
 	// Executes on a worker thread
@@ -43,18 +48,33 @@ public class RefreshService extends IntentService {
 			return;
 		}
 
+		Status lastestStatus = null;
 		YambaClient cloud = new YambaClient(username, password);
 		try {
 			List<Status> timeline = cloud.getTimeline(20);
-			for(Status status: timeline) {
-				Log.d(TAG, String.format("%s: %s", status.getUser(), status.getMessage()) );
+			for (Status status : timeline) {
+				Log.d(TAG,
+						String.format("%s: %s", status.getUser(),
+								status.getMessage()));
+
+				// Update latestTimestamp
+				if (status.getCreatedAt().getTime() > latestTimestamp) {
+					latestTimestamp = status.getCreatedAt().getTime();
+					lastestStatus = status;
+				}
 			}
-			
+
+			Log.d(TAG, "ran: " + this.toString());
 		} catch (YambaClientException e) {
 			Log.e(TAG, "Failed to fetch timeline", e);
 			e.printStackTrace();
 		}
-		
+
+		if (lastestStatus != null) {
+			sendBroadcast(new Intent(StatusContract.ACTION_NEW_STATUS));
+			Log.d(TAG, "sent broadcast for lastest status created at: "
+					+ lastestStatus.getCreatedAt());
+		}
 
 		Log.d(TAG, "onHandleIntent");
 		return;
@@ -63,7 +83,12 @@ public class RefreshService extends IntentService {
 	@Override
 	public void onDestroy() {
 		super.onDestroy();
-		Log.d(TAG, "onDestroyed");
+
+		// Save lastestTimestamp
+		PreferenceManager.getDefaultSharedPreferences(this).edit()
+				.putLong("latestTimestamp", latestTimestamp).apply();
+
+		Log.d(TAG, "onDestroyed with latestTimestamp: " + latestTimestamp);
 	}
 
 }
