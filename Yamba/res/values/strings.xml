@@ -18,5 +18,6 @@
     <string name="titlePreferences">Preferences</string>
     <string name="titlePrefs">Prefs</string>
     <string name="titleRefresh">Refresh</string>
+    <string name="timelineLoading">Loading...</string>
 
 </resources>
