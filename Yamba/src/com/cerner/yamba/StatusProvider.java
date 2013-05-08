@@ -102,7 +102,7 @@ public class StatusProvider extends ContentProvider {
 		long id = -1;
 
 		if (cloud == null)
-			return null; 
+			return null;
 
 		switch (MATCHER.match(uri)) {
 		case StatusContract.STATUS_DIR:
@@ -115,13 +115,21 @@ public class StatusProvider extends ContentProvider {
 		}
 
 		try {
-			List<Status> timeline = cloud.getTimeline(MAX_STATUSES);
+			List<Status> timeline = cloud.getTimeline((id == -1) ? MAX_STATUSES
+					: 1000);
 			MatrixCursor cursor = new MatrixCursor(
 					StatusContract.Columns.NAMES, MAX_STATUSES);
 			for (Status status : timeline) {
-				cursor.newRow().add(status.getId()).add(status.getUser())
-						.add(status.getMessage())
-						.add(status.getCreatedAt().getTime());
+				if (id == -1) {
+					cursor.newRow().add(status.getId()).add(status.getUser())
+							.add(status.getMessage())
+							.add(status.getCreatedAt().getTime());
+				} else if (id == status.getId()) {
+					cursor.newRow().add(status.getId()).add(status.getUser())
+							.add(status.getMessage())
+							.add(status.getCreatedAt().getTime());
+					return cursor;
+				}
 			}
 			Log.d(TAG, "query returning records: " + cursor.getCount());
 			return cursor;
