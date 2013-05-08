@@ -39,8 +39,16 @@ public class TimelineFragment extends ListFragment {
 
 	@Override
 	public void onListItemClick(ListView l, View v, int position, long id) {
-		startActivity(new Intent(getActivity(), DetailsActivity.class)
-				.putExtra("id", id));
+		DetailsFragment fragment = (DetailsFragment) getFragmentManager()
+				.findFragmentByTag(DetailsFragment.class.getSimpleName());
+
+		if (fragment != null && fragment.isVisible()) {
+			fragment.setId(id);
+			fragment.updateUI();
+		} else {
+			startActivity(new Intent(getActivity(), DetailsActivity.class)
+					.putExtra("id", id));
+		}
 	}
 
 	private final LoaderCallbacks<Cursor> callbacks = new LoaderCallbacks<Cursor>() {
