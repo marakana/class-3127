@@ -38,10 +38,14 @@ public class StatusProvider extends ContentProvider {
 		prefs = PreferenceManager.getDefaultSharedPreferences(getContext());
 		username = prefs.getString(PrefsFragment.USERNAME, "");
 		password = prefs.getString(PrefsFragment.PASSWORD, "");
-		cloud = new YambaClient(username, password);
 
-		return (cloud == null || TextUtils.isEmpty(username) || TextUtils
-				.isEmpty(password)) ? false : true;
+		if (TextUtils.isEmpty(username) || TextUtils.isEmpty(password)) {
+			return false;
+		} else {
+			cloud = new YambaClient(username, password);
+			return true;
+		}
+
 	}
 
 	@Override
@@ -97,6 +101,9 @@ public class StatusProvider extends ContentProvider {
 			String[] selectionArgs, String sortOrder) {
 		long id = -1;
 
+		if (cloud == null)
+			return null; 
+
 		switch (MATCHER.match(uri)) {
 		case StatusContract.STATUS_DIR:
 			break;
@@ -116,7 +123,7 @@ public class StatusProvider extends ContentProvider {
 						.add(status.getMessage())
 						.add(status.getCreatedAt().getTime());
 			}
-			Log.d(TAG, "query returning records: "+cursor.getCount());
+			Log.d(TAG, "query returning records: " + cursor.getCount());
 			return cursor;
 		} catch (YambaClientException e) {
 			Log.e(TAG, "Failed to fetch the timeline", e);
