@@ -70,6 +70,10 @@ public class StatusProvider extends ContentProvider {
 		try {
 			String status = values.getAsString(StatusContract.Columns.MESSAGE);
 			cloud.postStatus(status);
+			
+			// Notify content resolver that the data for this uri has changed
+			getContext().getContentResolver().notifyChange(uri, null);
+			
 			return uri; // should really be returning uri with id of new record
 		} catch (YambaClientException e) {
 			Log.e(TAG, "Failed to post", e);
@@ -131,6 +135,10 @@ public class StatusProvider extends ContentProvider {
 					return cursor;
 				}
 			}
+			
+			// Register the cursor to watch changes to this uri
+			cursor.setNotificationUri(getContext().getContentResolver(), uri);
+			
 			Log.d(TAG, "query returning records: " + cursor.getCount());
 			return cursor;
 		} catch (YambaClientException e) {
