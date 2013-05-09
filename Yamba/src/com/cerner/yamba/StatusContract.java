@@ -8,6 +8,7 @@ public final class StatusContract {
 	}
 
 	// General
+	public static final String ACTION_PREFS_CHANGED = "com.cerner.yamba.PREFS_CHANGED";
 	public static final String ACTION_NEW_STATUS = "com.cerner.yamba.NEW_STATUS";
 	public static final int NOTIFICATION_NEW_STATUS = 42;
 
