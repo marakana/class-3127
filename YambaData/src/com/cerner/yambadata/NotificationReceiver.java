@@ -1,8 +1,5 @@
 package com.cerner.yambadata;
 
-import com.cerner.yamba.MainActivity;
-import com.cerner.yambalib.StatusContract;
-
 import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
@@ -10,6 +7,8 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
+
+import com.cerner.yambalib.StatusContract;
 
 public class NotificationReceiver extends BroadcastReceiver {
 	private static final String TAG = NotificationReceiver.class
@@ -23,7 +22,7 @@ public class NotificationReceiver extends BroadcastReceiver {
 				.getSystemService(Context.NOTIFICATION_SERVICE);
 
 		PendingIntent operation = PendingIntent.getActivity(context, 0,
-				new Intent(context, MainActivity.class)
+				new Intent(StatusContract.ACTION_MAIN)
 						.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT),
 				PendingIntent.FLAG_UPDATE_CURRENT);
 

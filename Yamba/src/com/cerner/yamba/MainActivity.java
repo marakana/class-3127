@@ -1,5 +1,7 @@
 package com.cerner.yamba;
 
+import com.cerner.yambalib.StatusContract;
+
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
@@ -27,10 +29,10 @@ public class MainActivity extends Activity {
 			 startActivity( new Intent(this, StatusActivity.class) );
 			return true;
 		case R.id.actionPreferences:
-			startActivity( new Intent(this, PrefsActivity.class) );
+			startActivity( new Intent( StatusContract.ACTION_PREFS_ACTIVITY) );
 			return true;
 		case R.id.actionRefresh:
-			startService( new Intent(this, RefreshService.class) );
+			startService( new Intent( StatusContract.ACTION_REFRESH_DATA) );
 			return true;
 		default:
 			return false;

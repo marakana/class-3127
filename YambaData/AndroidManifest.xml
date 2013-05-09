@@ -7,20 +7,44 @@
         android:minSdkVersion="16"
         android:targetSdkVersion="17" />
 
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+
+    <permission
+        android:name="com.cerner.yamba.permission.REFRESH"
+        android:label="Refresh the data"
+        android:permissionGroup="android.permission-group.NETWORK"
+        android:protectionLevel="signature" />
+
     <application
         android:allowBackup="true"
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
         android:theme="@style/AppTheme" >
+        <activity android:name=".PrefsActivity" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+            <intent-filter>
+                <action android:name="com.cerner.yamba.PREFS_ACTIVITY" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+
         <service
             android:name=".RefreshService"
             android:permission="com.cerner.yamba.permission.REFRESH" >
+            <intent-filter>
+                <action android:name="com.cerner.yamba.REFRESH_DATA" />
+            </intent-filter>
         </service>
 
         <provider
             android:name=".StatusProvider"
-            android:authorities="com.cerner.yamba.provider"
-            android:exported="false" >
+            android:authorities="com.cerner.yamba.provider" >
         </provider>
 
         <receiver

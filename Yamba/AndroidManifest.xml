@@ -8,16 +8,10 @@
         android:minSdkVersion="14"
         android:targetSdkVersion="17" />
 
-    <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
 
-    <permission
-        android:name="com.cerner.yamba.permission.REFRESH"
-        android:label="Refresh the data"
-        android:permissionGroup="android.permission-group.NETWORK"
-        android:protectionLevel="signature" />
-
+    <uses-permission android:name="com.cerner.yamba.permission.REFRESH"/>
+    
     <application
         android:name=".YambaApp"
         android:allowBackup="true"
@@ -40,17 +34,16 @@
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-        </activity>
-        <activity
-            android:name="com.cerner.yambadata.PrefsActivity"
-            android:exported="false" >
+            <intent-filter>
+                <action android:name="com.cerner.yamba.MAIN" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
         </activity>
         <activity
             android:name=".DetailsActivity"
             android:exported="false" >
         </activity>
-
-
     </application>
 
 </manifest>

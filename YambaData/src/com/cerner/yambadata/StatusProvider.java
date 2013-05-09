@@ -76,7 +76,7 @@ public class StatusProvider extends ContentProvider {
 					.getAsDouble(StatusContract.Columns.LONGITUDE);
 			if (latitude != null && longitude != null) {
 				cloud.postStatus(status, latitude, longitude);
-				Log.d(TAG, String.format("Posted %s (%d, %d)", status,
+				Log.d(TAG, String.format("Posted %s (%f, %f)", status,
 						latitude, longitude));
 			} else {
 				cloud.postStatus(status);
