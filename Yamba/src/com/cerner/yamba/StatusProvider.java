@@ -69,11 +69,22 @@ public class StatusProvider extends ContentProvider {
 
 		try {
 			String status = values.getAsString(StatusContract.Columns.MESSAGE);
-			cloud.postStatus(status);
-			
+			Double latitude = values
+					.getAsDouble(StatusContract.Columns.LATITUDE);
+			Double longitude = values
+					.getAsDouble(StatusContract.Columns.LONGITUDE);
+			if (latitude != null && longitude != null) {
+				cloud.postStatus(status, latitude, longitude);
+				Log.d(TAG, String.format("Posted %s (%d, %d)", status,
+						latitude, longitude));
+			} else {
+				cloud.postStatus(status);
+				Log.d(TAG, String.format("Posted %s", status));
+			}
+
 			// Notify content resolver that the data for this uri has changed
 			getContext().getContentResolver().notifyChange(uri, null);
-			
+
 			return uri; // should really be returning uri with id of new record
 		} catch (YambaClientException e) {
 			Log.e(TAG, "Failed to post", e);
@@ -135,10 +146,10 @@ public class StatusProvider extends ContentProvider {
 					return cursor;
 				}
 			}
-			
+
 			// Register the cursor to watch changes to this uri
 			cursor.setNotificationUri(getContext().getContentResolver(), uri);
-			
+
 			Log.d(TAG, "query returning records: " + cursor.getCount());
 			return cursor;
 		} catch (YambaClientException e) {

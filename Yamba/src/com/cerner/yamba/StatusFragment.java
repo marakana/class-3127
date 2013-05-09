@@ -3,7 +3,11 @@ package com.cerner.yamba;
 import android.app.Fragment;
 import android.app.ProgressDialog;
 import android.content.ContentValues;
+import android.content.Context;
 import android.graphics.Color;
+import android.location.Location;
+import android.location.LocationListener;
+import android.location.LocationManager;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -26,6 +30,8 @@ public class StatusFragment extends Fragment {
 	private EditText statusText;
 	private TextView statusCount;
 	private int originalColor;
+	private LocationManager locationManager;
+	private static Location location;
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup root,
@@ -85,6 +91,44 @@ public class StatusFragment extends Fragment {
 		return view;
 	}
 
+	@Override
+	public void onActivityCreated(Bundle savedInstanceState) {
+		super.onActivityCreated(savedInstanceState);
+		locationManager = (LocationManager) getActivity().getSystemService(
+				Context.LOCATION_SERVICE);
+		location = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+	}
+	
+	@Override
+	public void onResume() {
+		super.onResume();
+		locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 60000, 100, listener);
+	}
+	
+	@Override
+	public void onPause() {
+		super.onPause();
+		locationManager.removeUpdates(listener);
+	}
+	
+	private static LocationListener listener = new LocationListener() {
+
+		@Override
+		public void onLocationChanged(Location newLocation) {
+			location = newLocation;
+		}
+
+		@Override
+		public void onProviderDisabled(String provider) {
+		}
+		@Override
+		public void onProviderEnabled(String provider) {
+		}
+		@Override
+		public void onStatusChanged(String provider, int status, Bundle extras) {
+		}		
+	};
+
 	private PostToCloudTask postToCloudTask;
 
 	@Override
@@ -124,6 +168,12 @@ public class StatusFragment extends Fragment {
 			values.put(StatusContract.Columns.MESSAGE, params[0]);
 			values.put(StatusContract.Columns.CREATED_AT,
 					System.currentTimeMillis());
+			if (location != null) {
+				values.put(StatusContract.Columns.LATITUDE,
+						location.getLatitude());
+				values.put(StatusContract.Columns.LONGITUDE,
+						location.getLongitude());
+			}
 			Uri ret;
 			try {
 				ret = getActivity().getContentResolver().insert(
@@ -133,9 +183,10 @@ public class StatusFragment extends Fragment {
 				return getString(R.string.statusFailedToPost);
 			}
 
-//			if( getActivity().getContentResolver().getType(ret) != StatusContract.TYPE_ITEM ) 
-//				return "Error!";
-			
+			// if( getActivity().getContentResolver().getType(ret) !=
+			// StatusContract.TYPE_ITEM )
+			// return "Error!";
+
 			return (ret == null) ? getString(R.string.statusFailedToPost)
 					: getString(R.string.statusSuccessfullyPosted);
 		}
