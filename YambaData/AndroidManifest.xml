@@ -15,6 +15,12 @@
         android:label="Refresh the data"
         android:permissionGroup="android.permission-group.NETWORK"
         android:protectionLevel="signature" />
+    <permission
+        android:name="com.cerner.yamba.permission.READ_DATA"
+        android:protectionLevel="signature" />
+    <permission
+        android:name="com.cerner.yamba.permission.WRITE_DATA"
+        android:protectionLevel="signature" />
 
     <application
         android:allowBackup="true"
@@ -44,7 +50,9 @@
 
         <provider
             android:name=".StatusProvider"
-            android:authorities="com.cerner.yamba.provider" >
+            android:authorities="com.cerner.yamba.provider"
+            android:readPermission="com.cerner.yamba.permission.READ_DATA"
+            android:writePermission="com.cerner.yamba.permission.WRITE_DATA" >
         </provider>
 
         <receiver
