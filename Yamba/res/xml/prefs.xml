@@ -10,5 +10,6 @@
         android:summary="@string/summaryPassword"
         android:password="true"
         android:title="@string/titlePassword" />
+    <ListPreference android:key="interval" android:title="@string/title_interval" android:summary="@string/summaryInterval" android:entries="@array/intervalNames" android:entryValues="@array/intervalValues" android:defaultValue="0"/>
 
 </PreferenceScreen>

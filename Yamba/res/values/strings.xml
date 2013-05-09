@@ -19,5 +19,7 @@
     <string name="titlePrefs">Prefs</string>
     <string name="titleRefresh">Refresh</string>
     <string name="timelineLoading">Loading...</string>
+    <string name="title_interval">Refresh Interval</string>
+    <string name="summaryInterval">How frequently should we check the cloud?</string>
 
 </resources>
