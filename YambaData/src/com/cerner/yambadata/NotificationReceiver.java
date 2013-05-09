@@ -1,4 +1,7 @@
-package com.cerner.yamba;
+package com.cerner.yambadata;
+
+import com.cerner.yamba.MainActivity;
+import com.cerner.yambalib.StatusContract;
 
 import android.app.Notification;
 import android.app.NotificationManager;

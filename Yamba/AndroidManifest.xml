@@ -12,6 +12,12 @@
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
 
+    <permission
+        android:name="com.cerner.yamba.permission.REFRESH"
+        android:label="Refresh the data"
+        android:permissionGroup="android.permission-group.NETWORK"
+        android:protectionLevel="signature" />
+
     <application
         android:name=".YambaApp"
         android:allowBackup="true"
@@ -20,6 +26,7 @@
         android:theme="@style/AppTheme" >
         <activity
             android:name="com.cerner.yamba.StatusActivity"
+            android:exported="false"
             android:label="@string/titleUpdateStatus" >
             <intent-filter>
                 <action android:name="com.cerner.action.UPDATE_STATUS" />
@@ -34,35 +41,16 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".PrefsActivity" >
-        </activity>
-        <activity android:name=".DetailsActivity" >
-        </activity>
-
-        <service android:name=".RefreshService" >
-        </service>
-
-        <provider
-            android:name=".StatusProvider"
-            android:authorities="com.cerner.yamba.provider"
+        <activity
+            android:name="com.cerner.yambadata.PrefsActivity"
             android:exported="false" >
-        </provider>
-
-        <receiver
-            android:name=".NotificationReceiver"
+        </activity>
+        <activity
+            android:name=".DetailsActivity"
             android:exported="false" >
-            <intent-filter>
-                <action android:name="com.cerner.yamba.NEW_STATUS" />
-            </intent-filter>
-        </receiver>
-        <receiver android:name=".BootReceiver" >
-            <intent-filter>
-                <action android:name="android.intent.action.BOOT_COMPLETED" />
-            </intent-filter>
-            <intent-filter>
-                <action android:name="com.cerner.yamba.PREFS_CHANGED" />
-            </intent-filter>
-        </receiver>
+        </activity>
+
+
     </application>
 
 </manifest>

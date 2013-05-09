@@ -14,6 +14,8 @@ import android.widget.SimpleCursorAdapter;
 import android.widget.SimpleCursorAdapter.ViewBinder;
 import android.widget.TextView;
 
+import com.cerner.yambalib.StatusContract;
+
 public class TimelineFragment extends ListFragment {
 	private static final String[] FROM = { StatusContract.Columns.USER,
 			StatusContract.Columns.MESSAGE, StatusContract.Columns.CREATED_AT };

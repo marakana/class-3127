@@ -1,4 +1,4 @@
-package com.cerner.yamba;
+package com.cerner.yambalib;
 
 import android.net.Uri;
 import android.provider.BaseColumns;

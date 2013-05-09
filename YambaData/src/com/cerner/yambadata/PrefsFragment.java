@@ -1,4 +1,6 @@
-package com.cerner.yamba;
+package com.cerner.yambadata;
+
+import com.cerner.yambalib.StatusContract;
 
 import android.content.Intent;
 import android.content.SharedPreferences;

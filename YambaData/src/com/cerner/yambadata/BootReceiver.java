@@ -1,4 +1,4 @@
-package com.cerner.yamba;
+package com.cerner.yambadata;
 
 import android.app.AlarmManager;
 import android.app.PendingIntent;

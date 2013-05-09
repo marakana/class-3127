@@ -1,5 +1,6 @@
 package com.cerner.yamba;
 
+
 import android.app.Fragment;
 import android.app.ProgressDialog;
 import android.content.ContentUris;
@@ -14,6 +15,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.cerner.yambalib.StatusContract;
 
 public class DetailsFragment extends Fragment {
 	private static final String TAG = DetailsFragment.class.getSimpleName();

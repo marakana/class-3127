@@ -1,4 +1,4 @@
-package com.cerner.yamba;
+package com.cerner.yambadata;
 
 import java.util.List;
 
@@ -10,6 +10,7 @@ import android.text.TextUtils;
 import android.util.Log;
 import android.widget.Toast;
 
+import com.cerner.yambalib.StatusContract;
 import com.marakana.android.yamba.clientlib.YambaClient;
 import com.marakana.android.yamba.clientlib.YambaClient.Status;
 import com.marakana.android.yamba.clientlib.YambaClientException;

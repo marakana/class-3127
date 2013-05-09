@@ -23,6 +23,8 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.cerner.yambalib.StatusContract;
+
 public class StatusFragment extends Fragment {
 	private static final String TAG = StatusFragment.class.getSimpleName();
 	private static final int DANGER_ZONE = 50;
