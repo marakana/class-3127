@@ -1,5 +1,8 @@
 package com.cerner.yambalib;
 
+import com.cerner.yambalib.YambaStatus;
+
 interface IYambaService {
-	void postStatus( String message, double latitude, double longitude);
+	boolean postStatus( in String message, double latitude, double longitude);
+	List<YambaStatus> getTimeline(int max);
 }

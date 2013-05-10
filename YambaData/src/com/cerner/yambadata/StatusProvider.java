@@ -5,28 +5,20 @@ import java.util.List;
 import android.content.ContentProvider;
 import android.content.ContentUris;
 import android.content.ContentValues;
-import android.content.SharedPreferences;
 import android.content.UriMatcher;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.database.MatrixCursor;
 import android.net.Uri;
-import android.preference.PreferenceManager;
-import android.text.TextUtils;
 import android.util.Log;
 
 import com.cerner.yambalib.StatusContract;
 import com.cerner.yambalib.YambaManager;
-import com.marakana.android.yamba.clientlib.YambaClient;
-import com.marakana.android.yamba.clientlib.YambaClient.Status;
-import com.marakana.android.yamba.clientlib.YambaClientException;
+import com.cerner.yambalib.YambaStatus;
 
 public class StatusProvider extends ContentProvider {
 	private static final String TAG = StatusProvider.class.getSimpleName();
-	private SharedPreferences prefs;
-	private String username, password;
-	private YambaClient cloud;
-	private YambaManager yambaManager;
+	private static YambaManager yambaManager;
 
 	private static final UriMatcher MATCHER = new UriMatcher(
 			UriMatcher.NO_MATCH);
@@ -39,20 +31,8 @@ public class StatusProvider extends ContentProvider {
 
 	@Override
 	public boolean onCreate() {
-
 		yambaManager = new YambaManager(getContext());
-
-		prefs = PreferenceManager.getDefaultSharedPreferences(getContext());
-		username = prefs.getString("username", "");
-		password = prefs.getString("password", "");
-
-		if (TextUtils.isEmpty(username) || TextUtils.isEmpty(password)) {
-			return false;
-		} else {
-			cloud = new YambaClient(username, password);
-			return true;
-		}
-
+		return true;
 	}
 
 	@Override
@@ -74,18 +54,23 @@ public class StatusProvider extends ContentProvider {
 			throw new IllegalArgumentException("Invalid uri: " + uri);
 		}
 
+		boolean success = false;
+
 		String status = values.getAsString(StatusContract.Columns.MESSAGE);
 		Double latitude = values.getAsDouble(StatusContract.Columns.LATITUDE);
 		Double longitude = values.getAsDouble(StatusContract.Columns.LONGITUDE);
 		if (latitude != null && longitude != null) {
-			yambaManager.postStatus(status, latitude, longitude);
+			success = yambaManager.postStatus(status, latitude, longitude);
 			Log.d(TAG, String.format("Posted %s (%f, %f)", status, latitude,
 					longitude));
 		} else {
-			yambaManager.postStatus(status, Double.NaN, Double.NaN);
+			success = yambaManager.postStatus(status, Double.NaN, Double.NaN);
 			Log.d(TAG, String.format("Posted %s", status));
 		}
 
+		if (!success) {
+			return null;
+		}
 		// Notify content resolver that the data for this uri has changed
 		getContext().getContentResolver().notifyChange(uri, null);
 
@@ -115,9 +100,6 @@ public class StatusProvider extends ContentProvider {
 			String[] selectionArgs, String sortOrder) {
 		long id = -1;
 
-		if (cloud == null)
-			return null;
-
 		switch (MATCHER.match(uri)) {
 		case StatusContract.STATUS_DIR:
 			break;
@@ -136,34 +118,34 @@ public class StatusProvider extends ContentProvider {
 			throw new IllegalArgumentException("Invalid uri: " + uri);
 		}
 
-		try {
-			List<Status> timeline = cloud.getTimeline((id == -1) ? MAX_STATUSES
-					: 1000);
-			MatrixCursor cursor = new MatrixCursor(
-					StatusContract.Columns.NAMES, MAX_STATUSES);
-			for (Status status : timeline) {
-				if (id == -1) {
-					cursor.newRow().add(status.getId()).add(status.getUser())
-							.add(status.getMessage())
-							.add(status.getCreatedAt().getTime());
-				} else if (id == status.getId()) {
-					cursor.newRow().add(status.getId()).add(status.getUser())
-							.add(status.getMessage())
-							.add(status.getCreatedAt().getTime());
-					return cursor;
-				}
-			}
+		List<YambaStatus> timeline = yambaManager
+				.getTimeline((id == -1) ? MAX_STATUSES : 1000);
 
-			// Register the cursor to watch changes to this uri
-			cursor.setNotificationUri(getContext().getContentResolver(), uri);
-
-			Log.d(TAG, "query returning records: " + cursor.getCount());
-			return cursor;
-		} catch (YambaClientException e) {
-			Log.e(TAG, "Failed to fetch the timeline", e);
-			e.printStackTrace();
+		if (timeline == null) {
+			Log.e(TAG, "Failed to fetch the timeline");
 			return null;
 		}
+		Log.d(TAG, "Got timeline: "+timeline.size());
+
+		MatrixCursor cursor = new MatrixCursor(StatusContract.Columns.NAMES,
+				MAX_STATUSES);
+		for (YambaStatus status : timeline) {
+			if (id == -1) {
+				cursor.newRow().add(status.getId()).add(status.getUser())
+						.add(status.getMessage()).add(status.getTimestamp());
+			} else if (id == status.getId()) {
+				cursor.newRow().add(status.getId()).add(status.getUser())
+						.add(status.getMessage()).add(status.getTimestamp());
+				return cursor;
+			}
+		}
+
+		// Register the cursor to watch changes to this uri
+		cursor.setNotificationUri(getContext().getContentResolver(), uri);
+
+		Log.d(TAG, "query returning records: " + cursor.getCount());
+		return cursor;
+
 	}
 
 }

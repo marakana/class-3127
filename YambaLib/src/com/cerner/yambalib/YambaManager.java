@@ -1,5 +1,7 @@
 package com.cerner.yambalib;
 
+import java.util.List;
+
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
@@ -23,6 +25,12 @@ public class YambaManager {
 				Context.BIND_AUTO_CREATE);
 		Log.d(TAG, "YambaManager: " + ret);
 	}
+	
+	@Override
+	protected void finalize() throws Throwable {
+		super.finalize();
+		context.unbindService(CONN);
+	}
 
 	private static final ServiceConnection CONN = new ServiceConnection() {
 
@@ -41,15 +49,30 @@ public class YambaManager {
 
 	// --- Proxy Calls ---
 
-	public void postStatus(String message, double latitude, double longitude) {
+	public boolean  postStatus(String message, double latitude, double longitude) {
 		if (yambaService == null) {
 			Log.d(TAG, "postStatus without yambaService");
-			return;
+			return false;
 		}
 		try {
 			yambaService.postStatus(message, latitude, longitude);
+			return true;
 		} catch (RemoteException e) {
 			e.printStackTrace();
+			return false;
+		}
+	}
+	
+	public List<YambaStatus> getTimeline( int max ) {
+		if (yambaService == null) {
+			Log.d(TAG, "getTimeline without yambaService");
+			return null;
+		}
+		try {
+			return yambaService.getTimeline(max);
+		} catch (RemoteException e) {
+			e.printStackTrace();
+			return null;
 		}
 	}
 }

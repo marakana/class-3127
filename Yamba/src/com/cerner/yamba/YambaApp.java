@@ -1,5 +1,7 @@
 package com.cerner.yamba;
 
+import com.cerner.yambalib.StatusContract;
+
 import android.app.Application;
 
 public class YambaApp extends Application {
@@ -8,6 +10,8 @@ public class YambaApp extends Application {
 	@Override
 	public void onCreate() {
 		super.onCreate();
+		
+		getContentResolver().getType(StatusContract.CONTENT_URI);
 	}
 
 	@Override
