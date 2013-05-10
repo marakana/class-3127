@@ -51,7 +51,6 @@
         <provider
             android:name=".StatusProvider"
             android:authorities="com.cerner.yamba.provider"
-            android:readPermission="com.cerner.yamba.permission.READ_DATA"
             android:writePermission="com.cerner.yamba.permission.WRITE_DATA" >
         </provider>
 

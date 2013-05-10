@@ -7,6 +7,7 @@ import android.content.ContentUris;
 import android.content.ContentValues;
 import android.content.SharedPreferences;
 import android.content.UriMatcher;
+import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.database.MatrixCursor;
 import android.net.Uri;
@@ -124,6 +125,14 @@ public class StatusProvider extends ContentProvider {
 		case StatusContract.STATUS_DIR:
 			break;
 		case StatusContract.STATUS_ITEM:
+			// Enforce com.cerner.yamba.permission.READ_DATA
+			if (getContext().checkCallingOrSelfPermission(
+					"com.cerner.yamba.permission.READ_DATA") != PackageManager.PERMISSION_GRANTED) {
+				throw new SecurityException(
+						"Not allowed to read all data. "
+								+ "Have you declared com.cerner.yamba.permission.READ_DATA permission?");
+			}
+			
 			id = ContentUris.parseId(uri);
 			break;
 		default:
