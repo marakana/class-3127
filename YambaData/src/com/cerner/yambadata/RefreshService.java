@@ -39,8 +39,8 @@ public class RefreshService extends IntentService {
 
 		SharedPreferences prefs = PreferenceManager
 				.getDefaultSharedPreferences(this);
-		String username = prefs.getString(PrefsFragment.USERNAME, "");
-		String password = prefs.getString(PrefsFragment.PASSWORD, "");
+		String username = prefs.getString("username", "");
+		String password = prefs.getString("password", "");
 
 		// Do we have username & password?
 		if (TextUtils.isEmpty(username) || TextUtils.isEmpty(password)) {

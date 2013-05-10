@@ -7,9 +7,16 @@
         android:title="@string/titleUsername" />
     <EditTextPreference
         android:key="password"
-        android:summary="@string/summaryPassword"
         android:password="true"
+        android:summary="@string/summaryPassword"
         android:title="@string/titlePassword" />
-    <ListPreference android:key="interval" android:title="@string/title_interval" android:summary="@string/summaryInterval" android:entries="@array/intervalNames" android:entryValues="@array/intervalValues" android:defaultValue="0"/>
+
+    <ListPreference
+        android:defaultValue="0"
+        android:entries="@array/intervalNames"
+        android:entryValues="@array/intervalValues"
+        android:key="interval"
+        android:summary="@string/summaryInterval"
+        android:title="@string/title_interval" />
 
 </PreferenceScreen>

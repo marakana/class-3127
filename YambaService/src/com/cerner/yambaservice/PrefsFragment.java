@@ -1,6 +1,4 @@
-package com.cerner.yambadata;
-
-import com.cerner.yambalib.StatusContract;
+package com.cerner.yambaservice;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -8,6 +6,8 @@ import android.content.SharedPreferences.OnSharedPreferenceChangeListener;
 import android.os.Bundle;
 import android.preference.PreferenceFragment;
 import android.preference.PreferenceManager;
+
+import com.cerner.yambalib.StatusContract;
 
 public class PrefsFragment extends PreferenceFragment {
 	public static final String USERNAME = "username";

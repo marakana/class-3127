@@ -16,6 +16,7 @@ import android.text.TextUtils;
 import android.util.Log;
 
 import com.cerner.yambalib.StatusContract;
+import com.cerner.yambalib.YambaManager;
 import com.marakana.android.yamba.clientlib.YambaClient;
 import com.marakana.android.yamba.clientlib.YambaClient.Status;
 import com.marakana.android.yamba.clientlib.YambaClientException;
@@ -25,6 +26,7 @@ public class StatusProvider extends ContentProvider {
 	private SharedPreferences prefs;
 	private String username, password;
 	private YambaClient cloud;
+	private YambaManager yambaManager;
 
 	private static final UriMatcher MATCHER = new UriMatcher(
 			UriMatcher.NO_MATCH);
@@ -37,9 +39,12 @@ public class StatusProvider extends ContentProvider {
 
 	@Override
 	public boolean onCreate() {
+
+		yambaManager = new YambaManager(getContext());
+
 		prefs = PreferenceManager.getDefaultSharedPreferences(getContext());
-		username = prefs.getString(PrefsFragment.USERNAME, "");
-		password = prefs.getString(PrefsFragment.PASSWORD, "");
+		username = prefs.getString("username", "");
+		password = prefs.getString("password", "");
 
 		if (TextUtils.isEmpty(username) || TextUtils.isEmpty(password)) {
 			return false;
@@ -69,30 +74,22 @@ public class StatusProvider extends ContentProvider {
 			throw new IllegalArgumentException("Invalid uri: " + uri);
 		}
 
-		try {
-			String status = values.getAsString(StatusContract.Columns.MESSAGE);
-			Double latitude = values
-					.getAsDouble(StatusContract.Columns.LATITUDE);
-			Double longitude = values
-					.getAsDouble(StatusContract.Columns.LONGITUDE);
-			if (latitude != null && longitude != null) {
-				cloud.postStatus(status, latitude, longitude);
-				Log.d(TAG, String.format("Posted %s (%f, %f)", status,
-						latitude, longitude));
-			} else {
-				cloud.postStatus(status);
-				Log.d(TAG, String.format("Posted %s", status));
-			}
-
-			// Notify content resolver that the data for this uri has changed
-			getContext().getContentResolver().notifyChange(uri, null);
-
-			return uri; // should really be returning uri with id of new record
-		} catch (YambaClientException e) {
-			Log.e(TAG, "Failed to post", e);
-			e.printStackTrace();
-			return null;
+		String status = values.getAsString(StatusContract.Columns.MESSAGE);
+		Double latitude = values.getAsDouble(StatusContract.Columns.LATITUDE);
+		Double longitude = values.getAsDouble(StatusContract.Columns.LONGITUDE);
+		if (latitude != null && longitude != null) {
+			yambaManager.postStatus(status, latitude, longitude);
+			Log.d(TAG, String.format("Posted %s (%f, %f)", status, latitude,
+					longitude));
+		} else {
+			yambaManager.postStatus(status, Double.NaN, Double.NaN);
+			Log.d(TAG, String.format("Posted %s", status));
 		}
+
+		// Notify content resolver that the data for this uri has changed
+		getContext().getContentResolver().notifyChange(uri, null);
+
+		return uri; // should really be returning uri with id of new record
 	}
 
 	@Override
@@ -132,7 +129,7 @@ public class StatusProvider extends ContentProvider {
 						"Not allowed to read all data. "
 								+ "Have you declared com.cerner.yamba.permission.READ_DATA permission?");
 			}
-			
+
 			id = ContentUris.parseId(uri);
 			break;
 		default:

@@ -9,6 +9,7 @@ public final class StatusContract {
 
 	// General
 	public static final String ACTION_MAIN = "com.cerner.yamba.MAIN";
+	public static final String ACTION_SERVICE = "com.cerner.yamba.SERVICE";
 	public static final String ACTION_PREFS_ACTIVITY = "com.cerner.yamba.PREFS_ACTIVITY";
 	public static final String ACTION_REFRESH_DATA = "com.cerner.yamba.REFRESH_DATA";
 	public static final String ACTION_PREFS_CHANGED = "com.cerner.yamba.PREFS_CHANGED";

@@ -1,4 +1,4 @@
-package com.cerner.yambadata;
+package com.cerner.yambaservice;
 
 import android.app.Activity;
 import android.os.Bundle;

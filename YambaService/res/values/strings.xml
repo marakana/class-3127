@@ -1,0 +1,13 @@
+<resources>
+
+    <string name="app_name">YambaService</string>
+    <string name="titleUsername">Username</string>
+    <string name="summaryUsername">What\'s your username?</string>
+    <string name="titlePassword">Password</string>
+    <string name="summaryPassword">What\'s your password?</string>
+    <string name="titlePreferences">Preferences</string>
+    <string name="titlePrefs">Prefs</string>
+    <string name="title_interval">Refresh Interval</string>
+    <string name="summaryInterval">How frequently should we check the cloud?</string>
+    
+</resources>
